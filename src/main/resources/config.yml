@@ -1,0 +1,37 @@
+database:
+  host: "localhost"
+  user: "root"
+  password: "root"
+  port: 8889
+  name: "mpvclaim"
+
+messages:
+  prefix: "&6MVPClaim"
+  claim:
+    already: "%prefix% &cVous possédez déjà un claim."
+    created: "%prefix% &aVous avez créer un nouveau claim."
+    not-enough: "%prefix% &cVous ne possédez pas assez de MPVCoins (%claim_price% MPVCoins)"
+
+claim:
+  chunk-size: 16
+  levels:
+    1:
+      price: 0
+      kw:
+        capacity: 10000
+        uptake: 1000
+    2:
+      price: 100000
+      kw:
+        capacity: 20000
+        uptake: 900
+    3:
+      price: 300000
+      kw:
+        capacity: 30000
+        uptake: 800
+    4:
+      price: 500000
+      kw:
+        capacity: 40000
+        uptake: 700
