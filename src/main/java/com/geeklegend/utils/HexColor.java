@@ -1,9 +1,9 @@
 package com.geeklegend.utils;
 
-import net.md_5.bungee.api.ChatColor;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class HexColor {
     private static final Pattern pattern = Pattern.compile("&#[a-fA-F0-9]{6}");

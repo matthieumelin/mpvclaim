@@ -1,10 +1,13 @@
 name: MPVClaim
 version: 1.0
 api-version: 1.19
-author: GeekLegend
+authors: [GeekLegend, Kenda_]
 main: com.geeklegend.MPVClaim
 depend:
   - Vault
+  - ProtocolLib
+  - LuckPerms
+  - DecentHolograms
 commands:
-  claim:
-    usage: /claim
+  mpv:
+    usage: /mpv

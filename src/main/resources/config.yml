@@ -1,37 +1,309 @@
 database:
-  host: "localhost"
-  user: "root"
-  password: "root"
-  port: 8889
-  name: "mpvclaim"
+  host: "encelade01.privateheberg.net"
+  user: "2ae6bdb0a60f"
+  password: "9zEjsk8HUWET8kyu"
+  port: 3306
+  name: "ens_2ae6bdb0a60f"
 
 messages:
-  prefix: "&6MVPClaim"
+  prefix: "&6MPVClaim &7»"
+  commands:
+    claim:
+      usage:
+        admin:
+          - "&c(Admin) &7Commandes claim:"
+          - "&e/mpv - Liste des commandes."
+          - "&e/mpv claim admin disband <pseudo> - Supprimer tous les claims d'un joueur."
+          - "&e/mpv claim admin addkw <pseudo> <montant> - Ajouter des KW au coeur d'un joueur."
+          - "&e/mpv claim admin unclaim - Supprimer le claim d'un joueur."
+          - "&e/mpv claim admin heart - Déplacer le coeur d'un joueur."
+          - "&e/mpv claim - Créer un nouveau claim."
+          - "&e/mpv claim disband - Supprimer tous ses claims."
+          - "&e/mpv claim heart - Déplacer son coeur."
+          - "&e/mpv claim invite <pseudo> - Inviter un joueur dans son claim."
+          - "&e/mpv claim accept <pseudo> - Accepter une invitation à rejoindre le claim d'un joueur."
+          - "&e/mpv unclaim - Supprimer un claim."
+        user:
+          - "&7Commandes claim:"
+          - "&e/mpv - Liste des commandes."
+          - "&e/mpv claim - Créer un nouveau claim."
+          - "&e/mpv claim disband - Supprimer tous ses claims."
+          - "&e/mpv claim heart - Déplacer son coeur."
+          - "&e/mpv claim invite <pseudo> - Inviter un joueur dans son claim."
+          - "&e/mpv claim accept <pseudo> - Accepter une invitation à rejoindre le claim d'un joueur."
+          - "&e/mpv unclaim - Supprimer un claim."
   claim:
-    already: "%prefix% &cVous possédez déjà un claim."
+    area:
+      in:
+        title: "&7Claim de %claim_ownername%"
+        subtitle: "&aVous entrez dans le claim."
+      out:
+        title: "&7Claim de %claim_ownername%"
+        subtitle: "&cVous sortez du claim."
+    bypass:
+      no-permission: "%prefix% &cVous n'avez pas la permission pour cela."
+      toggle:
+        enabled: "%prefix% &aVous êtes désormais en mode administrateur, vous pouvez casser tous les claims."
+        disabled: "%prefix% &aVous n'êtes plus en mode administrateur."
+    heart:
+      updated: "%prefix% &aLa position du coeur a était mis à jour."
+      refill: "%prefix% &aVotre coeur a était rempli de %claim_refill_given% KW (%claim_refill_price% MPVCoins)."
+      need-refill: "%prefix% &cIl reste %claim_kw% KW à votre coeur, remplissez le avant que votre claim soit détruit."
+      full: "%prefix% &cVotre coeur est déjà au maximum."
+      cant-buy: "%prefix% &cVous n'avez pas l'autorisation de faire cela."
+      levelup:
+        new-level: "%prefix% &aVous êtes désormais au niveau %claim_new_level%."
+        max-level-reached: "%prefix% &cVous avez atteint le niveau max."
+    invitation:
+      dont-have: "%prefix% &cVous n'avez reçu aucune invitation de %sender_name%"
+      dont-exist: "%prefix% &c%sender_name% ne posséde pas de claim."
+      have-claim: "%prefix% &c%target_name% est déjà dans votre claim."
+      no-claim: "%prefix% &cVous devez posséder un claim pour inviter des joueurs."
+      sended:
+        sender: "%prefix% &aVous avez invité à %target_name%."
+        target: "%prefix% &aVous avez reçu une invitation de %sender_name% à rejoindre son claim."
+      expired:
+        sender: "%prefix% &cL'invitation de %target_name% a expiré."
+        target: "%prefix% &cL'invitation de %sender_name% a expiré."
+      offline: "%prefix% &c%target_name% n'est pas en ligne."
+      cant-self: "%prefix% &cVous ne pouvez pas faire cela sur vous même."
+      already: "%prefix% &cUne invitation est déjà envoyée à %target_name%."
+      declined:
+        member: "%prefix% &c%target_name% a décliné votre invitation."
+        target: "%prefix% &cVous avez décliné l'invitation de %sender_name%."
+      accepted:
+        member: "%prefix% &a%target_name% a rejoint votre claim."
+        target: "%prefix% &aVous avez rejoint le claim de %sender_name%."
+    already:
+      created: "%prefix% &cVous possédez déjà un claim."
+      claimed: "%prefix% &cVous ne pouvez pas claim ici."
+    unclaim:
+      disband: "%prefix% &cVous ne possédez qu'un claim, vous devez disband."
+      unclaimed: "%prefix% &aVous avez un-claim."
+      move-heart: "%prefix% &cVous devez déplacer votre coeur dans un autre claim pour faire cela."
+    member:
+      removed: "%prefix% &a%target_name% n'est plus un membre de votre claim."
+      no-member: "%prefix% &c%target_name% n'est pas un membre de votre claim."
+      cant-self: "%prefix% &cVous ne pouvez pas faire cela sur vous même."
+    vacation:
+      enabled: "%prefix% &aVotre claim est désormais en vacances, une fois déconnecter, vous ne pourrez plus revenir."
+      disabled: "%prefix% &aVotre claim n'est désormais plus en vacances."
+      already: "%prefix% &cVotre claim est déjà en vacances."
+      not-in-vacation: "%prefix% &cVotre claim n'est pas en vacances."
+      in-vacation: "&cVotre claim est en vacances durant %claim_vacation_time% jour(s), revenez plus tard."
+        
+    admin:
+      heart:
+        updated: "%prefix% &aLa position du coeur a était mis à jour."
+        full: "%prefix% &cLe coeur de %target_name% est déjà au maximum."
+        refill: "%prefix% &aLe coeur de %target_name% coeur a était rempli de %claim_refill_given% KW (%claim_refill_price% MPVCoins)."
+        min-amount: "%prefix% &cLe montant donné doit être supérieur à zéro."
+        limit-reached: "%prefix% Vous avez atteint la capacité maximale du coeur."
+      unclaim:
+        disband: "%prefix% &c%target_name% ne posséde qu'un claim, vous devez disband."
+        unclaimed: "%prefix% &aVous avez un-claim le terrain de %target_name%."
+        move-heart: "%prefix% &cVous devez déplacer le coeur de %target_name% dans un autre claim pour faire cela."
+      vacation:
+        disabled: "%prefix% &aLe claim de %target_name% n'est désormais plus en vacances."
+        not-in-vacation: "%prefix% &cLe claim de %target_name% n'est pas en vacances."
+      no-claim: "%prefix% &c%target_name% n'a pas de claim."
+      deleted: "%prefix% &aLe claim de %target_name% a été supprimé."
+      not-inside: "%prefix% &cVous n'êtes pas dans un claim."
+      in-fly: "%prefix% &cVous ne pouvez pas effectuer cela en étant en vol."
     created: "%prefix% &aVous avez créer un nouveau claim."
-    not-enough: "%prefix% &cVous ne possédez pas assez de MPVCoins (%claim_price% MPVCoins)"
+    deleted: "%prefix% &cVotre claim a été supprimé."
+    no-claim: "%prefix% &cVous n'avez pas de claim."
+    not-enough: "%prefix% &cVous ne possédez pas assez de MPVCoins (%price% MPVCoins)"
+    not-inside: "%prefix% &cVous n'êtes pas dans un claim."
+    not-owner: "%prefix% &cVous n'êtes pas le chef de ce claim."
+    not-available: "%prefix% &cVous ne pouvez pas claim."
+    not-next-to-claim: "%prefix% &cVous n'êtes pas à côté de l'un de vos claims."
+    in-fly: "%prefix% &cVous ne pouvez pas effectuer cela en étant en vol."
 
 claim:
-  chunk-size: 16
+  bypass-permission: "claim.admin"
+  world: "world"
+  member:
+    default:
+      canOpenHeart: false
+      canBuild: true
+      canBuyKW: false
+  invitation:
+    expiration: 1
+  heart:
+    refill:
+      given: 1000
+      price: 1000
+    hologram:
+      - "&d%claim_kw% / %claim_capacity% KW"
+      - "&7%claim_uptake% KW prélevé toutes les 24h"
   levels:
     1:
       price: 0
+      claims-available: 0
       kw:
         capacity: 10000
         uptake: 1000
     2:
       price: 100000
+      claims-available: 1
       kw:
         capacity: 20000
         uptake: 900
     3:
       price: 300000
+      claims-available: 2
       kw:
         capacity: 30000
         uptake: 800
     4:
       price: 500000
+      claims-available: 4
       kw:
         capacity: 40000
         uptake: 700
+
+guis:
+  claim:
+    main:
+      size: 9
+      title: "Gestion du coeur"
+      items:
+        infos:
+          slot: 0
+          icon: "paper"
+          name: "&7Infos"
+          lores:
+            - "&7Niveau: &e%claim_level%"
+            - "&7KW: &e%claim_kw%"
+            - "&7Capacité: &e%claim_capacity%"
+            - "&7Coeur: &e%claim_active%"
+        refill:
+          slot: 1
+          icon: "nether star"
+          name: "&7Recharger le coeur"
+          lores:
+            - "&7Prix: &e%claim_refill_price% MPVCoins"
+            - " "
+            - "&eClique-gauche: Recharger"
+        levelup:
+          slot: 2
+          icon: "experience bottle"
+          name: "&7Niveau suivant &e(%claim_level%)"
+          lores:
+            - "&7Capacité: &e%claim_capacity% KW"
+            - "&7Consommation: &e%claim_uptake% KW"
+            - "&e%claim_claims_available% chunk(s) &7supplémentaire(s)"
+            - " "
+            - "&ePrix: %claim_levelup_price% MPVCoins"
+            - " "
+            - "&eClique-gauche: Améliorer"
+        members:
+          slot: 3
+          icon: "player head"
+          name: "&7Membres &e(%claim_members%)"
+          lores:
+            - "&7Gestion des joueurs"
+            - " "
+            - "&eClique-gauche: Gérer"
+        vacation:
+          slot: 4
+          icon: "compass"
+          name: "&7Se mettre en vacances"
+          lores:
+            - "&7Mettre en vacances votre claim."
+            - " "
+            - "&eClique-gauche: Gérer"
+    members:
+      size: 54
+      title: "Gestion des membres"
+      items:
+        member:
+          name: "&e%claim_member_name%"
+          lores:
+            - "&7Autorisations:"
+            - "&7Peut ouvrir le coeur: &e%can_open_heart%"
+            - "&7Peut construire: &e%can_build%"
+            - "&7Peut ajouter des KW: &e%can_buy_kw%"
+            - " "
+            - "&eClique-gauche: Paramétrer"
+    member-settings:
+      size: 9
+      title: "Gestion du membre"
+      items:
+        can-open-heart:
+          slot: 0
+          icon: "end crystal"
+          name: "&7Ouvrir le coeur"
+          lores:
+            - "&7Statut: &e%can_open_heart%"
+            - " "
+            - "&eClique-gauche: Activer/Désactiver"
+        can-build:
+          slot: 1
+          icon: "oak planks"
+          name: "&7Construire"
+          lores:
+            - "&7Statut: &e%can_build%"
+            - " "
+            - "&eClique-gauche: Activer/Désactiver"
+        can-buy-kw:
+          slot: 2
+          icon: "blaze powder"
+          name: "&7Achat de KW"
+          lores:
+            - "&7Statut: &e%can_buy_kw%"
+            - " "
+            - "&eClique-gauche: Activer/Désactiver"
+    members:
+      size: 54
+      title: "Gestion des membres"
+      items:
+        member:
+          name: "&e%claim_member_name%"
+          lores:
+            - "&7Autorisations:"
+            - "&7Peut ouvrir le coeur: &e%can_open_heart%"
+            - "&7Peut construire: &e%can_build%"
+            - "&7Peut ajouter des KW: &e%can_buy_kw%"
+            - " "
+            - "&eClique-gauche: Paramétrer"
+    vacation:
+      size: 9
+      title: "Se mettre en vacances"
+      items:
+        three-days:
+          slot: 0
+          icon: "clock"
+          name: "&73 jours"
+          lores:
+            - "&7Se mettre en vacances durant"
+            - "&73 jours."
+            - " "
+            - "&eClique-gauche: Activer"
+        seven-days:
+          slot: 1
+          icon: "clock"
+          name: "&77 jours"
+          lores:
+            - "&7Se mettre en vacances durant"
+            - "&77 jours."
+            - " "
+            - "&eClique-gauche: Activer"
+        fifteen-days:
+          slot: 2
+          icon: "clock"
+          name: "&715 jours"
+          lores:
+            - "&7Se mettre en vacances durant"
+            - "&715 jours."
+            - " "
+            - "&eClique-gauche: Activer"
+        disable:
+          slot: 8
+          icon: "redstone block"
+          name: "&cDésactiver le mode vacances"
+          lores:
+            - "&7Permet de désactiver le mode vacances"
+            - " "
+            - "&eClique-gauche: Désactiver"

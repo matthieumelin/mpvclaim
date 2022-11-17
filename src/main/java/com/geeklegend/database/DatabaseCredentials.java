@@ -16,7 +16,7 @@ public class DatabaseCredentials {
     }
 
     public String toURI() {
-        return "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true";
+        return "jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&useSSL=false";
     }
 
     public String getHost() {
